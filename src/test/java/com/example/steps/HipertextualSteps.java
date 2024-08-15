@@ -5,8 +5,10 @@ import io.cucumber.java.en.*;
 import io.cucumber.java.Before;
 import io.cucumber.java.After;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.Assert;
 
 
@@ -17,8 +19,11 @@ public class HipertextualSteps {
 
     @Before
     public void setUp() {
+        ChromeOptions chromeOptions = new ChromeOptions();
+        chromeOptions.setUnhandledPromptBehaviour(UnexpectedAlertBehaviour.ACCEPT);
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
+        driver.manage().window().maximize();
         hipertextualPage = new HipertextualPage(driver);
     }
 
@@ -54,9 +59,17 @@ public class HipertextualSteps {
     }
 
     @When("he clicks and enter the email {string}")
-    public void heClicksAndEnterTheEmail(String email) {
+    public void heClicksAndEnterTheEmail(String email) throws InterruptedException {
         hipertextualPage.subscribeToNewsletter(email);
     }
 
+    @Then("he should see a confirmation message")
+    public void heShouldSeeAConfirmationMessage() {
+        hipertextualPage.manageWindows();
+        hipertextualPage.manageAlert();
+        hipertextualPage.getSuccessfulSubscriptionMessage();
+        Assert.assertTrue(hipertextualPage.getSuccessfulSubscriptionMessage().contains("By subscribing you agree to Substack's " +
+                "Terms of Use, our Privacy Policy and our Information collection notice"));
+    }
 }
 

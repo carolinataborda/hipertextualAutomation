@@ -31,7 +31,7 @@ public class HipertextualTest {
     }
 
     @Test(dependsOnMethods = {"testSearchAndVerifyPage"})
-    public void testSubscribeToNewsletter() {
+    public void testSubscribeToNewsletter() throws InterruptedException {
         hipertextualPage.subscribeToNewsletter("testExample@mail.com");
     }
 
