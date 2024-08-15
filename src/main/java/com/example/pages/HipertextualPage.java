@@ -79,7 +79,6 @@ public class HipertextualPage {
         for (String windowHandle : windowHandles) {
             if (!windowHandle.equals(mainWindowHandle)) {
                 driver.switchTo().window(mainWindowHandle);
-                //driver.close();
             }
         }
 
